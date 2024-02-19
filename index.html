@@ -1,0 +1,46 @@
+<script src="js/socket.io.js"></script>
+<script>
+    var server = "http://localhost:3000";
+    var io = io(server);
+    // sending message from client
+    io.emit("new_message", "New message");
+</script>
+
+<form onsubmit="return sendMessage();">
+    <input id="message" placeholder="Enter message">
+    <input type="submit" value="Send">
+</form>
+
+<ul id="messages"></ul>
+ 
+<script>
+function sendMessage() {
+    // get message
+    var message = document.getElementById("message");
+ 
+    // sending message from client
+    io.emit("new_message", message.value);
+ 
+    // this will prevent the form from submitting
+    return false;
+}
+io.on("new_message", function (data) {
+    console.log("Server says", data);
+});
+
+io.on("new_message", function (data) {
+ 
+ // display message
+ console.log("Server says", data);
+  
+ // creates a new DOM element for li tag
+ var li = document.createElement("li");
+
+ // show message in li item
+ li.innerHTML = data;
+
+ // append the message at the end of list
+ var messages = document.getElementById("messages");
+ messages.appendChild(li);
+});
+</script>
